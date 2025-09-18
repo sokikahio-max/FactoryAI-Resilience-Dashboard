@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17152407.svg)](https://doi.org/10.5281/zenodo.17152407)
+
+
 # Factory AI Resilience Dashboard (LLM + AutoML) — Code & Data
 
 This repository contains the latest notebook and datasets supporting the manuscript *Beyond Automation: An Evaluative and Resilient AI Systems for Sustainable I5.0 Manufacturing in the Second Half of AI — from Problem Definition to Human-Centric Decision Support*.
