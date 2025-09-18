@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+title: "Beyond Automation: An Evaluative and Resilient AI Systems for Sustainable\
+  \ I5.0 Manufacturing in the Second Half of AI \u2014 from Problem Definition to\
+  \ Human-Centric Decision Support (code and data)"
+authors:
+- family-names: Kiangala
+  given-names: Kahiomba Sonia
+  affiliation: UNISA
+- family-names: Wang
+  given-names: Zenghui
+  affiliation: UNISA
+date-released: '2025-09-18'
+version: 0.1.0
+doi: <will-be-filled-by-zenodo>

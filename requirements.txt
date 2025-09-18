@@ -1,0 +1,12 @@
+h2o
+ipykernel
+jupyter
+matplotlib
+numpy
+openai
+pandas
+pyngrok
+scikit-learn
+seaborn
+sklearn
+streamlit

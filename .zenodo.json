@@ -1,0 +1,26 @@
+{
+  "title": "Beyond Automation: An Evaluative and Resilient AI Systems for Sustainable I5.0 Manufacturing in the Second Half of AI \u2014 from Problem Definition to Human-Centric Decision Support (code and data)",
+  "upload_type": "software",
+  "description": "Resilient factory AI dashboard integrating LLM reasoning, AutoML (H2O), evaluation feedback loops, and explainability. This deposit accompanies the manuscript and includes datasets and a Jupyter notebook dashboard with a save feature.",
+  "creators": [
+    {
+      "name": "Kiangala, Kahiomba Sonia",
+      "affiliation": "UNISA"
+    },
+    {
+      "name": "Wang, Zenghui",
+      "affiliation": "UNISA"
+    }
+  ],
+  "keywords": [
+    "Industry 5.0",
+    "LLM",
+    "AutoML",
+    "Predictive Maintenance",
+    "Explainable AI",
+    "Streamlit"
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "related_identifiers": []
+}
