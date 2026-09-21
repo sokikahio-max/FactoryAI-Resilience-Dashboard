@@ -1,0 +1,71 @@
+experiment:
+  name: ai4i_failure_aware_revision
+  seeds: [11, 22, 33, 44, 55, 66, 77, 88, 99, 110]
+  train_fraction: 0.60
+  validation_fraction: 0.20
+  test_fraction: 0.20
+  target: "Machine failure"
+  primary_metric: "pr_auc"
+  max_models_total: 10
+  initial_models_recovery_methods: 5
+  nfolds: 5
+  exclude_deep_learning_for_reproducibility: true
+
+cost_policy:
+  false_negative_cost: 5.0
+  false_positive_cost: 1.0
+  target_coverage: 0.90
+
+recovery_policy:
+  min_primary_metric_retention: 0.85
+  max_cost_inflation: 1.25
+  max_retries: 1
+
+quality_policy:
+  moderate_missing_rate: 0.10
+  severe_missing_rate: 0.25
+  moderate_standardized_mean_shift: 0.50
+  severe_standardized_mean_shift: 1.00
+  moderate_ood_rate: 0.20
+  severe_ood_rate: 0.50
+  ood_training_quantile: 0.99
+
+planner:
+  mode: "mock"       # mock | openai
+  model: "gpt-5.6-luna"
+  temperature: 0.0
+  input_cost_per_mtok: 0.20
+  output_cost_per_mtok: 1.20
+
+backend:
+  name: "sklearn_smoke"   # sklearn_smoke | h2o
+  h2o_port: 54321
+  h2o_max_mem_size: "4G"
+
+perturbations:
+  - name: clean
+    severity: none
+  - name: sensor_drift
+    severity: mild
+    magnitude: 0.50
+    features: ["Process temperature [K]", "Torque [Nm]"]
+  - name: sensor_drift
+    severity: severe
+    magnitude: 1.00
+    features: ["Process temperature [K]", "Torque [Nm]"]
+  - name: measurement_noise
+    severity: mild
+    magnitude: 0.10
+    features: ["Air temperature [K]", "Process temperature [K]", "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"]
+  - name: measurement_noise
+    severity: severe
+    magnitude: 0.20
+    features: ["Air temperature [K]", "Process temperature [K]", "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"]
+  - name: missingness
+    severity: mild
+    magnitude: 0.05
+    features: ["Air temperature [K]", "Process temperature [K]", "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"]
+  - name: missingness
+    severity: severe
+    magnitude: 0.30
+    features: ["Air temperature [K]", "Process temperature [K]", "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"]

@@ -1,0 +1,64 @@
+cases:
+  - id: failure_detect_a
+    group: failure_detection
+    problem: "Predict whether a machine will fail from current sensor measurements."
+    target: "Machine failure"
+    target_cardinality: 2
+    target_is_continuous: false
+    expected_task: binary_classification
+  - id: failure_detect_b
+    group: failure_detection
+    problem: "Classify each equipment observation as failure or no failure using process telemetry."
+    target: "Machine failure"
+    target_cardinality: 2
+    target_is_continuous: false
+    expected_task: binary_classification
+  - id: failure_detect_c
+    group: failure_detection
+    problem: "Use sensor values to estimate the probability of an impending machine-failure event."
+    target: "Machine failure"
+    target_cardinality: 2
+    target_is_continuous: false
+    expected_task: binary_classification
+  - id: failure_type_a
+    group: failure_type
+    problem: "Classify which failure mode occurred: tool wear, heat dissipation, power, overstrain, or random failure."
+    target: "Failure type"
+    target_cardinality: 5
+    target_is_continuous: false
+    expected_task: multiclass_classification
+  - id: failure_type_b
+    group: failure_type
+    problem: "Assign each failed machine to one of five diagnostic failure categories."
+    target: "Failure type"
+    target_cardinality: 5
+    target_is_continuous: false
+    expected_task: multiclass_classification
+  - id: rul_a
+    group: rul
+    problem: "Estimate remaining useful life in hours from machine condition variables."
+    target: "Remaining useful life"
+    target_cardinality: null
+    target_is_continuous: true
+    expected_task: regression
+  - id: rul_b
+    group: rul
+    problem: "Predict a continuous remaining-life value for each machine observation."
+    target: "Remaining useful life"
+    target_cardinality: null
+    target_is_continuous: true
+    expected_task: regression
+  - id: energy_a
+    group: energy_forecast
+    problem: "Forecast factory energy demand for the next shift from recent time-ordered measurements."
+    target: "Next-shift energy demand"
+    target_cardinality: null
+    target_is_continuous: true
+    expected_task: forecasting
+  - id: energy_b
+    group: energy_forecast
+    problem: "Use recent energy history to forecast consumption during the next shift."
+    target: "Next-shift energy demand"
+    target_cardinality: null
+    target_is_continuous: true
+    expected_task: forecasting

@@ -1,15 +1,12 @@
 cff-version: 1.2.0
-message: If you use this software, please cite it as below.
-title: "Beyond Automation: An Evaluative and Resilient AI Systems for Sustainable\
-  \ I5.0 Manufacturing in the Second Half of AI \u2014 from Problem Definition to\
-  \ Human-Centric Decision Support (code and data)"
+message: "If you use this software, please cite the associated manuscript."
+title: "FactoryAI Resilience: Failure-Aware LLM–AutoML Research Pipeline"
+type: software
 authors:
-- family-names: Kiangala
-  given-names: Kahiomba Sonia
-  affiliation: UNISA
-- family-names: Wang
-  given-names: Zenghui
-  affiliation: UNISA
-date-released: '2025-09-18'
-version: 0.1.0
-doi: "10.5281/zenodo.17152407"
+  - family-names: "Kiangala"
+    given-names: "Kahiomba Sonia"
+  - family-names: "Wang"
+    given-names: "Zenghui"
+repository-code: "https://github.com/sokikahio-max/FactoryAI-Resilience-Dashboard"
+version: "1.0.0-manuscript"
+date-released: "2026-09-21"

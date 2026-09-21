@@ -1,24 +1,40 @@
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
-.ipynb_checkpoints/
-*.nbconvert.ipynb
-.env
-.venv
-env/
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
 venv/
-ENV/
-*.egg-info/
-dist/
-build/
+env/
+
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
+
+# H2O / Java runtime artifacts
+h2ologs/
 *.log
-*.tmp
-*.cache/
-.cache/
-/data/
-*.sqlite
-*.db
-.streamlit/
-.vscode/
+*.out
+*.err
+
+# Downloaded dataset (reproducibly obtained by script)
+data/ai4i2020.csv
+
+# Temporary/local experiment outputs
+results/tmp/
+results/local/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
