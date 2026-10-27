@@ -103,7 +103,13 @@ class ExecutionConfig(BaseModel):
 
 class PlannerTelemetry(BaseModel):
     mode: str
+    # ``model`` is kept for backward compatibility. For new OpenAI calls it is
+    # populated with the provider-returned model identifier when available.
     model: str
+    requested_model: str | None = None
+    provider_returned_model: str | None = None
+    response_id: str | None = None
+    temperature_sent: float | None = None
     latency_seconds: float
     input_tokens: int | None = None
     output_tokens: int | None = None

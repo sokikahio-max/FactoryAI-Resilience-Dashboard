@@ -1,0 +1,14 @@
+case_id,group,n_runs,schema_valid_rate,task_accuracy,metric_appropriateness,action_consistency,algorithm_recommendation_consistency,metric_consistency,mean_latency_seconds,mean_input_tokens,mean_output_tokens,mean_estimated_cost_usd
+energy_a,energy_forecast,5,1.0,1.0,1.0,1.0,1.0,1.0,2.667776639999647,930.0,177.2,0.00039864
+energy_b,energy_forecast,5,1.0,1.0,1.0,1.0,1.0,1.0,2.5848180000015417,927.0,190.0,0.0004134000000000001
+failure_detect_a,failure_detection,5,1.0,1.0,1.0,1.0,1.0,1.0,3.2740867799991973,924.0,185.6,0.00040752000000000003
+failure_detect_b,failure_detection,5,1.0,1.0,1.0,1.0,1.0,1.0,2.921194779999496,927.0,192.0,0.0004158
+failure_detect_c,failure_detection,5,1.0,1.0,1.0,1.0,1.0,1.0,2.538300299998082,928.0,172.4,0.00039248
+failure_type_a,failure_type,5,1.0,1.0,1.0,1.0,1.0,1.0,2.608721459998924,936.0,199.0,0.000426
+failure_type_b,failure_type,5,1.0,1.0,1.0,1.0,1.0,1.0,2.710003920001327,925.0,204.4,0.00043028000000000006
+rul_a,rul,5,1.0,1.0,1.0,1.0,1.0,1.0,2.663213739996718,924.0,189.4,0.00041208
+rul_b,rul,5,1.0,1.0,1.0,1.0,1.0,1.0,2.6320852800010472,924.0,159.2,0.00037584
+GROUP::energy_forecast,energy_forecast,10,1.0,1.0,1.0,1.0,1.0,1.0,2.6262973200005946,928.5,183.6,0.00040602
+GROUP::failure_detection,failure_detection,15,1.0,1.0,1.0,1.0,1.0,1.0,2.9111939533322584,926.3333333333334,183.33333333333334,0.00040526666666666663
+GROUP::failure_type,failure_type,10,1.0,1.0,1.0,1.0,1.0,1.0,2.6593626900001253,930.5,201.7,0.0004281399999999999
+GROUP::rul,rul,10,1.0,1.0,1.0,1.0,1.0,1.0,2.6476495099988826,924.0,174.3,0.00039395999999999995

@@ -59,12 +59,16 @@ def run_llm_evaluation(
                         "recommended_action": decision.recommended_action.value,
                         "candidate_algorithms": "|".join(decision.candidate_algorithms),
                         "primary_metric": decision.primary_metric,
-                        "metric_correct": decision.primary_metric in TASK_METRICS[decision.task_type],
+                        "metric_correct": decision.primary_metric in set(case.get("allowed_metrics", [])),
                         "schema_valid": telemetry.schema_valid,
                         "latency_seconds": telemetry.latency_seconds,
                         "input_tokens": telemetry.input_tokens,
                         "output_tokens": telemetry.output_tokens,
                         "estimated_cost_usd": telemetry.estimated_cost_usd,
+                        "requested_model": telemetry.requested_model,
+                        "provider_returned_model": telemetry.provider_returned_model,
+                        "response_id": telemetry.response_id,
+                        "temperature_sent": telemetry.temperature_sent,
                         "error": telemetry.error,
                     }
                 )
@@ -86,6 +90,10 @@ def run_llm_evaluation(
                         "input_tokens": None,
                         "output_tokens": None,
                         "estimated_cost_usd": None,
+                        "requested_model": None,
+                        "provider_returned_model": None,
+                        "response_id": None,
+                        "temperature_sent": None,
                         "error": f"{type(exc).__name__}: {exc}",
                     }
                 )

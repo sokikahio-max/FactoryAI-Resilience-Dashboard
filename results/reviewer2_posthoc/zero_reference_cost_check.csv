@@ -1,0 +1,6 @@
+method,n,zero_clean_validation_cost,min_clean_validation_cost,max_clean_validation_cost
+B0_manual_gbm,10,0,0.0345,0.0525
+B1_standard_h2o_automl,10,0,0.034,0.0565
+B2_rule_retry,10,0,0.0305,0.0545
+B3_llm_no_retry,10,0,0.0385,0.0555
+P_full_framework,10,0,0.0375,0.056

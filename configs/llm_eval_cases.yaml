@@ -6,6 +6,7 @@ cases:
     target_cardinality: 2
     target_is_continuous: false
     expected_task: binary_classification
+    allowed_metrics: [AUCPR, AUC, logloss]
   - id: failure_detect_b
     group: failure_detection
     problem: "Classify each equipment observation as failure or no failure using process telemetry."
@@ -13,6 +14,7 @@ cases:
     target_cardinality: 2
     target_is_continuous: false
     expected_task: binary_classification
+    allowed_metrics: [AUCPR, AUC, logloss]
   - id: failure_detect_c
     group: failure_detection
     problem: "Use sensor values to estimate the probability of an impending machine-failure event."
@@ -20,6 +22,7 @@ cases:
     target_cardinality: 2
     target_is_continuous: false
     expected_task: binary_classification
+    allowed_metrics: [AUCPR, AUC, logloss]
   - id: failure_type_a
     group: failure_type
     problem: "Classify which failure mode occurred: tool wear, heat dissipation, power, overstrain, or random failure."
@@ -27,6 +30,7 @@ cases:
     target_cardinality: 5
     target_is_continuous: false
     expected_task: multiclass_classification
+    allowed_metrics: [mean_per_class_error, logloss]
   - id: failure_type_b
     group: failure_type
     problem: "Assign each failed machine to one of five diagnostic failure categories."
@@ -34,6 +38,7 @@ cases:
     target_cardinality: 5
     target_is_continuous: false
     expected_task: multiclass_classification
+    allowed_metrics: [mean_per_class_error, logloss]
   - id: rul_a
     group: rul
     problem: "Estimate remaining useful life in hours from machine condition variables."
@@ -41,6 +46,7 @@ cases:
     target_cardinality: null
     target_is_continuous: true
     expected_task: regression
+    allowed_metrics: [RMSE, MAE]
   - id: rul_b
     group: rul
     problem: "Predict a continuous remaining-life value for each machine observation."
@@ -48,6 +54,7 @@ cases:
     target_cardinality: null
     target_is_continuous: true
     expected_task: regression
+    allowed_metrics: [RMSE, MAE]
   - id: energy_a
     group: energy_forecast
     problem: "Forecast factory energy demand for the next shift from recent time-ordered measurements."
@@ -55,6 +62,7 @@ cases:
     target_cardinality: null
     target_is_continuous: true
     expected_task: forecasting
+    allowed_metrics: [RMSE, MAE]
   - id: energy_b
     group: energy_forecast
     problem: "Use recent energy history to forecast consumption during the next shift."
@@ -62,3 +70,4 @@ cases:
     target_cardinality: null
     target_is_continuous: true
     expected_task: forecasting
+    allowed_metrics: [RMSE, MAE]

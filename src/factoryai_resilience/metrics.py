@@ -137,3 +137,92 @@ def resilience_metrics(clean: float, degraded_before: float, recovered: float) -
         "recovery_gain": gain,
         "normalized_recovery_ratio": normalized,
     }
+
+
+
+def calibrate_decision_boundary_band(
+    y_prob_validation,
+    threshold: float,
+    target_coverage: float,
+) -> float:
+    """Calibrate a decision-boundary abstention band to a target coverage.
+
+    This is a coverage-control heuristic, not a calibration of epistemic or
+    aleatoric predictive uncertainty.
+    """
+    prob = np.asarray(y_prob_validation, dtype=float)
+    distance = np.abs(prob - float(threshold))
+    abstain_fraction = float(np.clip(1.0 - target_coverage, 0.0, 1.0))
+    return float(np.quantile(distance, abstain_fraction)) if len(distance) else 0.0
+
+
+def selective_metrics(
+    y_true,
+    y_prob,
+    *,
+    threshold: float,
+    abstention_band: float,
+    policy: CostPolicy,
+) -> dict[str, float | int | None]:
+    """Metrics on predictions released outside the abstention band."""
+    y_true = np.asarray(y_true, dtype=int)
+    y_prob = np.asarray(y_prob, dtype=float)
+    pred = (y_prob >= float(threshold)).astype(int)
+    keep = np.abs(y_prob - float(threshold)) >= float(abstention_band)
+    n = int(keep.sum())
+    coverage = float(np.mean(keep)) if len(keep) else 0.0
+    if n == 0:
+        return {
+            "coverage": coverage,
+            "selective_error": None,
+            "selective_accuracy": None,
+            "selective_recall": None,
+            "selective_false_negative_rate": None,
+            "selective_expected_cost": None,
+            "released_n": 0,
+            "released_positive_n": 0,
+        }
+    yt, yp = y_true[keep], pred[keep]
+    tn, fp, fn, tp = confusion_matrix(yt, yp, labels=[0, 1]).ravel()
+    pos = int(fn + tp)
+    recall = float(tp / pos) if pos else None
+    fnr = float(fn / pos) if pos else None
+    cost = float((policy.false_negative_cost * fn + policy.false_positive_cost * fp) / n)
+    acc = float(accuracy_score(yt, yp))
+    return {
+        "coverage": coverage,
+        "selective_error": 1.0 - acc,
+        "selective_accuracy": acc,
+        "selective_recall": recall,
+        "selective_false_negative_rate": fnr,
+        "selective_expected_cost": cost,
+        "released_n": n,
+        "released_positive_n": pos,
+    }
+
+
+def risk_coverage_points(
+    y_true_test,
+    y_prob_test,
+    *,
+    y_prob_validation,
+    threshold: float,
+    policy: CostPolicy,
+    target_coverages=(0.70, 0.80, 0.90, 0.95, 1.00),
+) -> list[dict[str, float | int | None]]:
+    """Compute validation-calibrated decision-boundary risk--coverage points."""
+    rows = []
+    for target in target_coverages:
+        band = calibrate_decision_boundary_band(
+            y_prob_validation, threshold, float(target)
+        )
+        row = selective_metrics(
+            y_true_test,
+            y_prob_test,
+            threshold=threshold,
+            abstention_band=band,
+            policy=policy,
+        )
+        row.update({"target_coverage": float(target), "abstention_band": band})
+        rows.append(row)
+    return rows

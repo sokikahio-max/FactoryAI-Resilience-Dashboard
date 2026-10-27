@@ -4,7 +4,7 @@ Code and reproducibility materials for the manuscript:
 
 **A Failure-Aware and Human-Centric LLM–AutoML Framework for Resilient Decision Support in Industrial Applications in Industry 5.0**
 
-This repository implements a failure-aware industrial decision-support pipeline that combines structured LLM planning with H2O AutoML, validation-governed reconfiguration, uncertainty-aware abstention, and human escalation.
+This repository implements a failure-aware industrial decision-support pipeline that combines structured LLM planning with H2O AutoML, validation-governed reconfiguration, decision-boundary abstention, and human escalation.
 
 ## What the framework evaluates
 
@@ -26,7 +26,7 @@ The evaluation uses the AI4I 2020 Predictive Maintenance Dataset with ten fixed 
 - **Structured LLM planning:** the LLM returns a schema-constrained decision object; a deterministic policy maps only allowlisted fields into executable H2O settings.
 - **Failure-aware control:** the controller can **ACCEPT**, **RECONFIGURE**, **ABSTAIN**, or request **HUMAN ESCALATION**.
 - **Recovery guard:** seed-only/no-op retraining is not counted as LLM-guided recovery.
-- **Imbalance-aware evaluation:** PR-AUC is the primary metric; precision, recall, F1, balanced accuracy, MCC, ROC-AUC, FNR, Brier score, confusion counts, coverage, and selective accuracy are also recorded.
+- **Imbalance-aware evaluation:** PR-AUC is the primary metric; precision, recall, F1, balanced accuracy, MCC, ROC-AUC, FNR, Brier score, confusion counts, diagnostic coverage, selective accuracy, and failure-class recall are also recorded.
 
 ## Repository structure
 
@@ -166,3 +166,9 @@ The repository includes the final 350-run result table, the 45-call LLM evaluati
 ## Citation
 
 Please cite the associated manuscript when using this code. A `CITATION.cff` file is included for repository citation metadata.
+
+## Reviewer-2 R2 additions
+
+The manuscript's second revision adds dependence-corrected inference, a joint PR-AUC/cost/recall recovery gate, controller-policy auditing and sensitivity analysis, diagnostic-versus-operational coverage, targeted risk–coverage/selective-recall analysis, fixed-initial recovery isolation, and a repeated planner verification that records the provider-returned model identifier. See `docs/REVIEWER2_R2_PROTOCOL.md`, `results/reviewer2_posthoc/`, `results/reviewer2_targeted/`, and `results/llm_eval_r2/`.
+
+The intended manuscript-aligned release tag is **`v1.1.0-r2`**. Archive this exact snapshot before final submission and update the manuscript with the resulting Zenodo version DOI.

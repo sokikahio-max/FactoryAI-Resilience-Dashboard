@@ -103,6 +103,38 @@ def deterministic_retry_config(
     )
 
 
+
+def cost_inflation_ratio(current_cost: float, reference_cost: float, eps: float = 1e-12) -> float:
+    """Return a degradation-sensitive cost ratio, including a zero-reference case.
+
+    If the clean reference cost is zero and the current cost is positive, returning
+    infinity ensures that deterioration is not concealed by a neutral ratio.
+    """
+    if reference_cost > eps:
+        return float(current_cost / reference_cost)
+    if current_cost <= eps:
+        return 1.0
+    return float("inf")
+
+
+def recovery_candidate_is_acceptable(
+    *,
+    candidate: ClassificationMetrics,
+    incumbent: ClassificationMetrics,
+    eps: float = 1e-12,
+) -> bool:
+    """Joint validation gate used for R2 recovery selection.
+
+    A candidate must not reduce PR-AUC, increase asymmetric classification cost,
+    or reduce failure-class recall relative to the incumbent model.
+    """
+    return bool(
+        candidate.pr_auc + eps >= incumbent.pr_auc
+        and candidate.expected_cost <= incumbent.expected_cost + eps
+        and candidate.recall + eps >= incumbent.recall
+    )
+
+
 def controller(
     *,
     quality: QualityReport,
@@ -128,10 +160,8 @@ def controller(
         )
 
     retention = current.pr_auc / clean_reference.pr_auc if clean_reference.pr_auc else 0.0
-    cost_inflation = (
-        current.expected_cost / clean_reference.expected_cost
-        if clean_reference.expected_cost > 1e-12
-        else 1.0
+    cost_inflation = cost_inflation_ratio(
+        current.expected_cost, clean_reference.expected_cost
     )
 
     degraded = (

@@ -1,0 +1,15 @@
+controller,condition,diagnostic_instance_coverage,effective_operational_coverage,accepted_runs
+Full framework,clean,0.8994500000000001,0.8994500000000001,10
+Full framework,measurement_noise__mild,0.8989499999999999,0.2686,3
+Full framework,measurement_noise__severe,0.9023,0.0,0
+Full framework,missingness__mild,0.8999,0.54005,6
+Full framework,missingness__severe,,0.0,0
+Full framework,sensor_drift__mild,0.9055500000000001,0.27335000000000004,3
+Full framework,sensor_drift__severe,0.9032500000000001,0.0,0
+Non-LLM governed retry,clean,0.9014,0.9014,10
+Non-LLM governed retry,measurement_noise__mild,0.9037499999999999,0.18035,2
+Non-LLM governed retry,measurement_noise__severe,0.9023,0.0,0
+Non-LLM governed retry,missingness__mild,0.9015000000000001,0.44980000000000003,5
+Non-LLM governed retry,missingness__severe,0.90665,0.0,0
+Non-LLM governed retry,sensor_drift__mild,0.9033,0.0,0
+Non-LLM governed retry,sensor_drift__severe,0.8990500000000001,0.0,0

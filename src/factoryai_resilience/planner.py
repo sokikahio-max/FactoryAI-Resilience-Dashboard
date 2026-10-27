@@ -97,6 +97,9 @@ class MockPlanner(BasePlanner):
         telemetry = PlannerTelemetry(
             mode="mock",
             model="deterministic_mock",
+            requested_model="deterministic_mock",
+            provider_returned_model="deterministic_mock",
+            temperature_sent=None,
             latency_seconds=time.perf_counter() - start,
             input_tokens=0,
             output_tokens=0,
@@ -158,9 +161,13 @@ Rules:
 
     def plan(self, context: PlanningContext) -> tuple[PlannerDecision, PlannerTelemetry]:
         start = time.perf_counter()
+        requested_model = os.getenv("OPENAI_MODEL", self.settings.model)
+        # No temperature parameter is sent in this structured Responses API call.
+        # This is recorded explicitly rather than inferring a provider default.
+        temperature_sent = None
         try:
             response = self.client.responses.parse(
-                model=os.getenv("OPENAI_MODEL", self.settings.model),
+                model=requested_model,
                 input=[
                     {
                         "role": "system",
@@ -184,9 +191,14 @@ Rules:
                     + output_tokens / 1_000_000 * self.settings.output_cost_per_mtok
                 )
 
+            provider_model = str(getattr(response, "model", None) or requested_model)
             return decision, PlannerTelemetry(
                 mode="openai",
-                model=os.getenv("OPENAI_MODEL", self.settings.model),
+                model=provider_model,
+                requested_model=requested_model,
+                provider_returned_model=provider_model,
+                response_id=str(getattr(response, "id", "")) or None,
+                temperature_sent=temperature_sent,
                 latency_seconds=time.perf_counter() - start,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
@@ -196,7 +208,10 @@ Rules:
         except Exception as exc:
             telemetry = PlannerTelemetry(
                 mode="openai",
-                model=os.getenv("OPENAI_MODEL", self.settings.model),
+                model=requested_model,
+                requested_model=requested_model,
+                provider_returned_model=None,
+                temperature_sent=temperature_sent,
                 latency_seconds=time.perf_counter() - start,
                 schema_valid=False,
                 error=f"{type(exc).__name__}: {exc}",

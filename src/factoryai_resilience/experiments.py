@@ -18,7 +18,9 @@ from .policy import (
     controller,
     decision_to_execution_config,
     deterministic_retry_config,
+    cost_inflation_ratio,
     meaningful_execution_change,
+    recovery_candidate_is_acceptable,
     standard_automl_config,
 )
 from .quality import assess_data_quality
@@ -223,6 +225,10 @@ def run_method_condition(
         "planner_input_tokens": initial_telemetry.input_tokens if initial_telemetry else 0,
         "planner_output_tokens": initial_telemetry.output_tokens if initial_telemetry else 0,
         "planner_estimated_cost_usd": initial_telemetry.estimated_cost_usd if initial_telemetry else 0.0,
+        "initial_planner_requested_model": initial_telemetry.requested_model if initial_telemetry else None,
+        "initial_planner_provider_model": initial_telemetry.provider_returned_model if initial_telemetry else None,
+        "initial_planner_response_id": initial_telemetry.response_id if initial_telemetry else None,
+        "initial_planner_temperature_sent": initial_telemetry.temperature_sent if initial_telemetry else None,
         "initial_planner_action": initial_plan.recommended_action.value if initial_plan else None,
         "initial_planner_algorithms": json.dumps(initial_plan.candidate_algorithms) if initial_plan else None,
         "initial_planner_drop_features": json.dumps(initial_plan.drop_features) if initial_plan else None,
@@ -257,10 +263,8 @@ def run_method_condition(
 
     if method == "B2_rule_retry" and not is_clean and clean_validation_reference is not None:
         retention = before_val.pr_auc / clean_validation_reference.pr_auc if clean_validation_reference.pr_auc else 0.0
-        cost_inflation = (
-            before_val.expected_cost / clean_validation_reference.expected_cost
-            if clean_validation_reference.expected_cost > 1e-12
-            else 1.0
+        cost_inflation = cost_inflation_ratio(
+            before_val.expected_cost, clean_validation_reference.expected_cost
         )
         needs_retry = (
             retention < config.recovery_policy.min_primary_metric_retention
@@ -319,6 +323,10 @@ def run_method_condition(
             row["planner_output_tokens"] = (row["planner_output_tokens"] or 0) + (second_telemetry.output_tokens or 0)
             row["planner_estimated_cost_usd"] = (row["planner_estimated_cost_usd"] or 0.0) + (second_telemetry.estimated_cost_usd or 0.0)
             row["retry_planner_action"] = second_plan.recommended_action.value
+            row["retry_planner_requested_model"] = second_telemetry.requested_model
+            row["retry_planner_provider_model"] = second_telemetry.provider_returned_model
+            row["retry_planner_response_id"] = second_telemetry.response_id
+            row["retry_planner_temperature_sent"] = second_telemetry.temperature_sent
             row["retry_planner_algorithms"] = json.dumps(second_plan.candidate_algorithms)
             row["retry_planner_drop_features"] = json.dumps(second_plan.drop_features)
 
@@ -367,7 +375,9 @@ def run_method_condition(
                     candidate_val = _evaluate_validation(backend, recovery_model, validation_frame, split.target, config)
                     # Select only with validation data; the test set remains untouched here.
                     row["retry_execution_config"] = recovery_model.execution_config.model_dump_json()
-                    if candidate_val.pr_auc >= before_val.pr_auc:
+                    if recovery_candidate_is_acceptable(
+                        candidate=candidate_val, incumbent=before_val
+                    ):
                         final_model, final_val = recovery_model, candidate_val
                         row["recovery_model_selected"] = True
                     row["retry_count"] = 1
